@@ -1,7 +1,12 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Note, NoteDocument } from './schemas/note.schema';
+
 import { Model } from 'mongoose';
+
+import type { DecodedIdToken } from 'firebase-admin/auth';
+
+import { Note, NoteDocument } from './schemas/note.schema';
+
 import { CreateNoteDto } from './dto/create-note.dto';
 import { UpdateNoteDto } from './dto/update-note.dto';
 
@@ -12,25 +17,25 @@ export class NotesService {
     private readonly noteModel: Model<NoteDocument>,
   ) {}
 
-  async create(createNoteDto: CreateNoteDto) {
+  async create(createNoteDto: CreateNoteDto, user: DecodedIdToken) {
     return this.noteModel.create({
       ...createNoteDto,
-      userId: 'demo-user',
+      userId: user.uid,
     });
   }
 
-  async findAll() {
+  async findAll(user: DecodedIdToken) {
     return this.noteModel
       .find({
-        userId: 'demo-user',
+        userId: user.uid,
       })
       .sort({ createdAt: -1 });
   }
 
-  async findOne(id: string) {
+  async findOne(id: string, user: DecodedIdToken) {
     const note = await this.noteModel.findOne({
       _id: id,
-      userId: 'demo-user',
+      userId: user.uid,
     });
 
     if (!note) {
@@ -40,11 +45,11 @@ export class NotesService {
     return note;
   }
 
-  async update(id: string, updateNoteDto: UpdateNoteDto) {
+  async update(id: string, updateNoteDto: UpdateNoteDto, user: DecodedIdToken) {
     const note = await this.noteModel.findOneAndUpdate(
       {
         _id: id,
-        userId: 'demo-user',
+        userId: user.uid,
       },
       updateNoteDto,
       {
@@ -59,10 +64,10 @@ export class NotesService {
     return note;
   }
 
-  async remove(id: string) {
+  async remove(id: string, user: DecodedIdToken) {
     const note = await this.noteModel.findOneAndDelete({
       _id: id,
-      userId: 'demo-user',
+      userId: user.uid,
     });
 
     if (!note) {
