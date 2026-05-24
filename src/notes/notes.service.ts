@@ -58,7 +58,7 @@ export class NotesService {
     const [items, total] = await Promise.all([
       this.noteModel
         .find(filter)
-        .sort({ createdAt: -1 })
+        .sort({ isPinned: -1, createdAt: -1 })
         .skip(skip)
         .limit(limit),
       this.noteModel.countDocuments(filter),

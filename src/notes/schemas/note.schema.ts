@@ -14,6 +14,9 @@ export class Note {
   @Prop({ type: [String], default: [] })
   tags!: string[];
 
+  @Prop({ default: false })
+  isPinned!: boolean;
+
   @Prop({ type: [String], default: [] })
   imageKeys?: string[];
 

@@ -1,6 +1,7 @@
 import {
   ArrayMaxSize,
   IsArray,
+  IsBoolean,
   IsOptional,
   IsString,
   MaxLength,
@@ -22,4 +23,8 @@ export class CreateNoteDto {
   @ArrayMaxSize(10)
   @IsString({ each: true })
   tags?: string[];
+
+  @IsOptional()
+  @IsBoolean()
+  isPinned?: boolean;
 }
