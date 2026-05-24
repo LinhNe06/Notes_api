@@ -5,22 +5,22 @@ export type NoteDocument = HydratedDocument<Note>;
 
 @Schema({ timestamps: true })
 export class Note {
-  @Prop({ require: true, trim: true })
+  @Prop({ required: true, trim: true })
   title!: string;
 
-  @Prop({ require: true })
+  @Prop({ required: true })
   content!: string;
 
-  @Prop({ require: true, trim: true })
+  @Prop({ type: [String], default: [] })
   tags!: string[];
 
   @Prop({ type: [String], default: [] })
-  imageKey?: string;
+  imageKeys?: string[];
 
   @Prop()
   imageUrl?: string;
 
-  @Prop({ require: true })
+  @Prop({ required: true, index: true })
   userId!: string;
 }
 
