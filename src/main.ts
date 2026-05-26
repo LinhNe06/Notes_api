@@ -9,6 +9,8 @@ async function bootstrap() {
 
   const port = configService.getOrThrow<number>('PORT');
 
+  app.setGlobalPrefix('api');
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -22,4 +24,4 @@ async function bootstrap() {
   });
 }
 
-bootstrap().catch((e) => `Lỗi khởi động: ,${e} `);
+bootstrap().catch((e) => Logger.error('Lỗi khi khởi động:', e));
